@@ -9,10 +9,24 @@ function PetsList() {
 
   //CREATE QUERY!! used to save anything written in changes into query inside search bar
   //LINK 12-13-14 ARE ALL 'STATES'
-  const [pets, setpets] = useState(data);
+  const [pets, setPets] = useState(data);
   const [query, setQuery] = useState("");
   const [type, setType] = useState("");
-  console.log("type", type);
+  // console.log("type", type);
+  //what this says is show me ALL my pets EXCEPT for the one w/the id "theId"
+  // const handleAdoptt = (theId) => pets.filter((pet) => pet.id !== theId);
+
+  function handleAdopt(id) {
+    let index = pets.findIndex((pet) => pet.id === id);
+    pets.splice(index, 1);
+    setPets(pets);
+    console.log(index);
+    console.log(pets);
+  }
+
+  const handleAdopts = (id) => {
+    setPets(pets.filter((pet) => pet.id !== id));
+  };
   //FILTER THRU MY DATA [PETS]
   const fliteredPets = pets
     .filter(
@@ -20,8 +34,10 @@ function PetsList() {
         pet.name.toLowerCase().includes(query.toLocaleLowerCase()) &&
         pet.type.includes(type)
     )
-    //I DONT GET WHATS GOING ON HERE. why "<PetItem key={pet.id} pet={pet} />"
-    .map((pet) => <PetItem key={pet.id} pet={pet} />);
+
+    .map((pet) => (
+      <PetItem key={pet.id} pet={pet} handleAdopts={handleAdopts} />
+    ));
 
   //DONT NEED THIS ONE, updated ver is Filteredpets
   const petList = pets.map((pet) => <PetItem pet={pet} key={pet.id} />);
